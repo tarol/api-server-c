@@ -3,6 +3,7 @@ const Router = require('koa-router');
 const queryString = require('query-string');
 
 const cors = require('./utils/cors');
+const cookie = require('./utils/cookie');
 const mock = require('./utils/mock');
 const models = require('./category');
 
@@ -23,5 +24,6 @@ router.get('/api/:cate', ctx => {
 
 app
   .use(cors)
+  .use(cookie)
   .use(router.routes())
   .listen(9999);
