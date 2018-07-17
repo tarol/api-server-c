@@ -1,4 +1,4 @@
-module.exports = function(ctx, next) {
+module.exports = async function cookie(ctx, next) {
   ctx.get('Origin') && ctx.append('Set-Cookie', 'name=tarol; Path=/');
-  next();
+  await next();
 };
