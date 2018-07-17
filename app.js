@@ -14,9 +14,14 @@ const router = new Router();
 
 router.all('/blob/:file', ctx => {
   const { file } = ctx.params;
+  const { type } = queryString.parse(ctx.search);
   const filePath = path.join(__dirname, `./blob/${file}`);
   if (fs.existsSync(filePath)) {
-    ctx.body = fs.createReadStream(filePath);
+    if (type === 'chunked') {
+      ctx.body = fs.createReadStream(filePath);
+    } else {
+      ctx.body = fs.readFileSync(filePath);
+    }
   } else {
     ctx.body = `没有对应文件--${file}`;
   }
