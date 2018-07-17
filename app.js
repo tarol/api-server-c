@@ -1,4 +1,6 @@
 const Koa = require('koa');
+const fs = require('fs');
+const path = require('path');
 const Router = require('koa-router');
 const queryString = require('query-string');
 
@@ -10,7 +12,17 @@ const models = require('./category');
 const app = new Koa();
 const router = new Router();
 
-router.get('/api/:cate', ctx => {
+router.all('/blob/:file', ctx => {
+  const { file } = ctx.params;
+  const filePath = path.join(__dirname, `./blob/${file}`);
+  if (fs.existsSync(filePath)) {
+    ctx.body = fs.createReadStream(filePath);
+  } else {
+    ctx.body = `没有对应文件--${file}`;
+  }
+});
+
+router.all('/api/:cate', ctx => {
   const { cate } = ctx.params;
   const { type } = queryString.parse(ctx.search);
   const model = models[cate];
