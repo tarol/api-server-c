@@ -4,7 +4,7 @@ const path = require('path');
 const Router = require('koa-router');
 const queryString = require('query-string');
 
-const cors = require('./middlewares/cors');
+const cors = require('koa2-cors');
 const cookie = require('./middlewares/cookie');
 const speed = require('./middlewares/speed');
 const mock = require('./utils/mock');
@@ -41,7 +41,11 @@ router.all('/api/:cate', ctx => {
 });
 
 app
-  .use(cors)
+  .use(
+    cors({
+      credentials: true
+    })
+  )
   .use(speed)
   .use(cookie)
   .use(router.routes())

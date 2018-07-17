@@ -7,6 +7,7 @@
 	"dependencies": {
 		"koa": "^2.5.2",
 		"koa-router": "^7.4.0",
+		"koa2-cors": "^2.0.6",
 		"lodash": "^4.17.4",
 		"mockjs": "^1.0.1-beta3",
 		"query-string": "^6.1.0"
