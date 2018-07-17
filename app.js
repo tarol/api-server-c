@@ -1,14 +1,15 @@
-const Koa = require('koa');
 const fs = require('fs');
 const path = require('path');
+
+const Koa = require('koa');
+const cors = require('koa2-cors');
 const Router = require('koa-router');
 const queryString = require('query-string');
 
-const cors = require('koa2-cors');
-const cookie = require('./middlewares/cookie');
-const speed = require('./middlewares/speed');
-const mock = require('./utils/mock');
 const models = require('./models');
+const mock = require('./utils/mock');
+const speed = require('./middlewares/speed');
+const cookie = require('./middlewares/cookie');
 
 const app = new Koa();
 const router = new Router();
