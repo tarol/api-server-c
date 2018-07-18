@@ -3,3 +3,4 @@ dist
 .vscode
 .eslintcache
 yarn-error.log
+.tmp

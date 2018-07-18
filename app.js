@@ -1,10 +1,10 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 const Koa = require('koa');
 const cors = require('koa2-cors');
 const Router = require('koa-router');
-const queryString = require('query-string');
+const koaBody = require('koa-body');
 
 const models = require('./models');
 const mock = require('./utils/mock');
@@ -14,9 +14,25 @@ const cookie = require('./middlewares/cookie');
 const app = new Koa();
 const router = new Router();
 
-router.all('/blob/:file', ctx => {
+router.post(
+  '/upload',
+  koaBody({
+    multipart: true,
+    patchKoa: true
+  }),
+  ctx => {
+    const { file } = ctx.request.files;
+    const { name = Date.now() } = ctx.request.body;
+    const filePath = path.join(__dirname, `.tmp/${name}`);
+    fs.ensureFileSync(filePath);
+    fs.createReadStream(file.path).pipe(fs.createWriteStream(filePath));
+    ctx.body = fs.createReadStream(file.path);
+  }
+);
+
+router.get('/blob/:file', ctx => {
   const { file } = ctx.params;
-  const { type } = queryString.parse(ctx.search);
+  const { type } = ctx.query;
   const filePath = path.join(__dirname, `./blob/${file}`);
   if (fs.existsSync(filePath)) {
     if (type === 'chunked') {
@@ -29,9 +45,9 @@ router.all('/blob/:file', ctx => {
   }
 });
 
-router.all('/api/:cate', ctx => {
+router.get('/api/:cate', speed, ctx => {
   const { cate } = ctx.params;
-  const { type } = queryString.parse(ctx.search);
+  const { type } = ctx.query;
   const model = models[cate];
   if (model) {
     ctx.body = mock(type, model);
@@ -47,7 +63,6 @@ app
       credentials: true
     })
   )
-  .use(speed)
   .use(cookie)
   .use(router.routes())
   .listen(9999);
