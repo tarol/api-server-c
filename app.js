@@ -3,8 +3,11 @@ const path = require('path');
 
 const Koa = require('koa');
 const cors = require('koa2-cors');
-const Router = require('koa-router');
+const serve = require('koa-static');
 const koaBody = require('koa-body');
+const Router = require('koa-router');
+const favicon = require('koa-favicon');
+const compress = require('koa-compress');
 
 const models = require('./models');
 const mock = require('./utils/mock');
@@ -58,11 +61,14 @@ router.get('/api/:cate', speed, ctx => {
 });
 
 app
+  .use(compress())
   .use(
     cors({
       credentials: true
     })
   )
   .use(cookie)
+  .use(favicon('favicon.jpg'))
+  .use(serve('public'))
   .use(router.routes())
   .listen(9999);
