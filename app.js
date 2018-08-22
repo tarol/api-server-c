@@ -64,7 +64,8 @@ app
   .use(compress())
   .use(
     cors({
-      credentials: true
+      credentials: true,
+      maxAge: 60 * 60
     })
   )
   .use(cookie)
