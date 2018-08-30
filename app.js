@@ -13,6 +13,7 @@ const models = require('./models');
 const mock = require('./utils/mock');
 const speed = require('./middlewares/speed');
 const cookie = require('./middlewares/cookie');
+const mime = require('./middlewares/mime');
 
 const app = new Koa();
 const router = new Router();
@@ -69,6 +70,7 @@ app
     })
   )
   .use(cookie)
+  .use(mime)
   .use(favicon('favicon.jpg'))
   .use(serve('public'))
   .use(router.routes())
