@@ -51,10 +51,10 @@ router.get('/blob/:file', ctx => {
 
 router.get('/api/:cate', speed, ctx => {
   const { cate } = ctx.params;
-  const { type } = ctx.query;
+  const { type, ...query } = ctx.query;
   const model = models[cate];
   if (model) {
-    ctx.body = mock(type, model);
+    ctx.body = mock(type, model, query);
   } else {
     ctx.status = 404;
     ctx.body = `没有对应模型--${cate}`;
@@ -74,4 +74,6 @@ app
   .use(favicon('favicon.jpg'))
   .use(serve('public'))
   .use(router.routes())
-  .listen(9999);
+  .listen(9999, function() {
+    console.log('listen to 9999');
+  });
