@@ -1,7 +1,7 @@
 const Mock = require('mockjs');
 const { merge } = require('lodash/fp');
 
-function mock(type, model, { size, total }) {
+function mock(type, model, { size, total, ...rest }) {
   if (type === 'array') {
     return mockArray(model);
   } else if (type === 'computedArray') {
@@ -9,8 +9,9 @@ function mock(type, model, { size, total }) {
       data: mockArray(model, size)
     })(
       Mock.mock({
-        total: +total || `@natural(${size * 5}, ${size * 50})`,
-        size: +size
+        total: total || `@natural(${size * 5}, ${size * 50})`,
+        size: size,
+        ...rest
       })
     );
   } else {

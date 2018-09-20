@@ -11,6 +11,7 @@ const compress = require('koa-compress');
 
 const models = require('./models');
 const mock = require('./utils/mock');
+const { formatQuery } = require('./utils/_');
 const speed = require('./middlewares/speed');
 const cookie = require('./middlewares/cookie');
 const mime = require('./middlewares/mime');
@@ -51,7 +52,7 @@ router.get('/blob/:file', ctx => {
 
 router.get('/api/:cate', speed, ctx => {
   const { cate } = ctx.params;
-  const { type, ...query } = ctx.query;
+  const { type, ...query } = formatQuery(ctx.query);
   const model = models[cate];
   if (model) {
     ctx.body = mock(type, model, query);
