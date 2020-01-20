@@ -1,4 +1,5 @@
 module.exports = {
   person: require('./person'),
-  product: require('./product')
+  product: require('./product'),
+  bu: require('./bu')
 };
