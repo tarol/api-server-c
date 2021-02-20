@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const http = require('http');
 
 const Koa = require('koa');
 const cors = require('koa2-cors');
@@ -17,7 +18,13 @@ const cookie = require('./middlewares/cookie');
 const mime = require('./middlewares/mime');
 
 const app = new Koa();
+const server = http.createServer(app.callback());
+const io = require('socket.io')(server);
 const router = new Router();
+
+io.on('connection', () => {
+
+});
 
 router.post(
   '/upload',
@@ -74,7 +81,7 @@ app
   .use(mime)
   .use(favicon('favicon.jpg'))
   .use(serve('public'))
-  .use(router.routes())
-  .listen(9999, function() {
-    console.log('listen to 9999');
-  });
+  .use(router.routes());
+server.listen(9999, function() {
+  console.log('listen to 9999');
+});
