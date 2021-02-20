@@ -10,6 +10,7 @@ const Router = require('koa-router');
 const favicon = require('koa-favicon');
 const compress = require('koa-compress');
 
+const PORT = 9999;
 const models = require('./models');
 const mock = require('./utils/mock');
 const { formatQuery } = require('./utils/_');
@@ -82,6 +83,6 @@ app
   .use(favicon('favicon.jpg'))
   .use(serve('public'))
   .use(router.routes());
-server.listen(9999, function() {
-  console.log('listen to 9999');
+server.listen(PORT, function() {
+  console.log(`listen to ${PORT}`);
 });
