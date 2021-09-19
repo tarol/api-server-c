@@ -23,8 +23,10 @@ const server = http.createServer(app.callback());
 const io = require('socket.io')(server);
 const router = new Router();
 
-io.on('connection', () => {
-
+io.on('connection', socket => {
+  socket.on('request', v => {
+    socket.emit('response', v);
+  });
 });
 
 router.post(

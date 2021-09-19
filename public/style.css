@@ -1,0 +1,15 @@
+.box {
+  display: flex;
+}
+
+.left-panel {
+  flex: 1;
+}
+
+.send {
+  margin-bottom: 8px;
+}
+
+.right-panel  {
+  flex: 1;
+}
