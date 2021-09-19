@@ -9,6 +9,7 @@ const koaBody = require('koa-body');
 const Router = require('koa-router');
 const favicon = require('koa-favicon');
 const compress = require('koa-compress');
+const sse = require('koa-sse-stream');
 
 const PORT = 9999;
 const models = require('./models');
@@ -72,6 +73,19 @@ router.get('/api/:cate', speed, ctx => {
   }
 });
 
+router.get('/sse', ctx => {
+  ctx.sse.send('a');
+  setTimeout(() => {
+    ctx.sse.send('b');
+  }, 1000);
+  setTimeout(() => {
+    ctx.sse.send('c');
+  }, 2000);
+  setTimeout(() => {
+    ctx.sse.sendEnd();
+  }, 3000);
+});
+
 app
   .use(compress())
   .use(
@@ -84,6 +98,10 @@ app
   .use(mime)
   .use(favicon('favicon.jpg'))
   .use(serve('public'))
+  .use(sse({
+    maxClients: 5000,
+    pingInterval: 30000
+  }))
   .use(router.routes());
 server.listen(PORT, function() {
   console.log(`listen to ${PORT}`);
