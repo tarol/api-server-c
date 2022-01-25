@@ -12,6 +12,7 @@
   <div class="box">
     <div class="left-panel">
       <div><button class="send">send</button></div>
+      <div><button class="storm">storm</button></div>
       <div><textarea class="textarea" cols="30" rows="10"></textarea></div>
     </div>
     <div class="right-panel"></div>
@@ -19,18 +20,30 @@
   <script src="./socket.io.js"></script>
   <script>
     const btn = document.querySelector('.send');
+    const storm = document.querySelector('.storm');
     const textarea = document.querySelector('textarea');
     const right = document.querySelector('.right-panel');
     const socket = io();
+    let alarms = []
 
     socket.on('response', data => {
       const div = document.createElement('div')
       div.innerText = data
       right.appendChild(div)
     });
+    socket.on('alarm', e => {
+      alarms.push(e)
+    })
+    socket.on("disconnect", (e) => {
+      console.log(e);
+    });
     btn.addEventListener('click', e => {
       const value = textarea.value;
       socket.emit('request', value);
+    })
+    storm.addEventListener('click', e => {
+      alarms = []
+      socket.emit('storm');
     })
   </script>
 </body>
