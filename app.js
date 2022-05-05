@@ -73,6 +73,10 @@ router.get('/api/:cate', speed, ctx => {
   }
 });
 
+router.get('/setCookie', ctx => {
+  ctx.cookies.set('age', 18);
+});
+
 router.get('/sse', ctx => {
   ctx.sse.send('a');
   setTimeout(() => {
